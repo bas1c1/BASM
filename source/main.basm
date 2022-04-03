@@ -1,0 +1,13 @@
+sec text
+bits 16
+proc start
+move ax 3
+inter 10h
+
+move ah 0x0e
+move al 1
+inter 10h
+
+proc finish
+yasm times 510+start-finish db 0
+yasm db 0x55, 0xAA
