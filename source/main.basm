@@ -1,4 +1,4 @@
-sec text
+org 0x7c00
 bits 16
 proc start
 move ax 3
@@ -9,5 +9,5 @@ move al 1
 inter 10h
 
 proc finish
-yasm times 510+start-finish db 0
-yasm db 0x55, 0xAA
+nasm times 510-($-$$) db 0
+nasm dw 0xaa55
