@@ -1,4 +1,3 @@
-#include "pch.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -32,7 +31,7 @@ int main(int argc, char const* argv[]) {
                 }
                 znach.push_back(line[i]);
             }
-            file_fw << "use" << znach << endl;
+            file_fw << "bits" << znach << endl;
         }
 
         if (line.substr(0, line.find(" ")) == "proc") {
@@ -82,7 +81,7 @@ int main(int argc, char const* argv[]) {
                 }
                 znach.push_back(line[i]);
             }
-            file_fw << "org " << znach << endl;
+            file_fw << "[org " << znach << "]" << endl;
         }
 
         if (line.substr(0, line.find(" ")) == "sec") {
@@ -104,9 +103,8 @@ int main(int argc, char const* argv[]) {
         }
 
         if (line.substr(0, line.find(" ")) == "finish") {
-            file_fw << "finish:" << endl;
-            file_fw << "    times 510+start-finish db 0" << endl;
-            file_fw << "    db 0x55, 0xAA" << endl;
+            file_fw << "times 510-($-$$) db 0" << endl;
+            file_fw << "dw 0xaa55" << endl;
         }
 
         if (line.substr(0, line.find(" ")) == "rb") {
@@ -185,7 +183,7 @@ int main(int argc, char const* argv[]) {
             file_fw << "jz " << "." << znach << endl;
         }
 
-        if (line.substr(0, line.find(" ")) == "yasm") {
+        if (line.substr(0, line.find(" ")) == "nasm") {
             int start = 5;
             string znach;
             for (int i = start; i < line.size(); i++) {
@@ -250,8 +248,6 @@ int main(int argc, char const* argv[]) {
 
     file_fw.close();
     file_fr.close();
-    string command = "yasm -f bin -o " + string(argv[2]) + " " + string("boot.asm");
-    std::system(command.c_str());
     getchar();
     return 0;
 }
